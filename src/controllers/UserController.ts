@@ -10,7 +10,7 @@ class UserController {
    
     async create(request: Request, response: Response) {
         const { name, email, username, password } = request.body;
-
+        
         if (!name) {
             throw new AppError('Insira o seu nome por favor!');
         }
@@ -44,13 +44,13 @@ class UserController {
                     password: hashedPassword
                 }
             });
+            return response.status(201).json()
 
         }catch(error){
             console.log(error)
             throw new AppError("Erro inesperado ao criar usuário!");
         }
 
-        return response.status(201).json()
     }
 
     async index(request: Request, response: Response){
