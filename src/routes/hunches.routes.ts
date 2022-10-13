@@ -3,9 +3,10 @@ import { HunchController } from "../controllers/HunchController";
 import { ensureAuthenticated } from "../middlewares/ensureAuthenticated";
 
 const hunchesRoutes = Router();
-const hunchController = new HunchController()
+const hunchController = new HunchController();
 
-hunchesRoutes.get("/", ensureAuthenticated, hunchController.create)
+hunchesRoutes.post("/", ensureAuthenticated, hunchController.create);
+hunchesRoutes.get("/:username", hunchController.index);
 
 export {
     hunchesRoutes

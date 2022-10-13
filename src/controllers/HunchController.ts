@@ -1,20 +1,20 @@
-import {Request, Response} from "express";
+import { Request, Response } from "express";
 import { AppError } from "../utils/AppError";
 
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient();
 
 
-class HunchController{
-    async create(request: Request, response: Response){
-        const {user_id}= request.user;
-        const {gameId, homeTeamScore = 0, awayTeamScore = 0} = request.body;
+class HunchController {
+    async create(request: Request, response: Response) {
+        const { user_id } = request.user;
+        const { gameId, homeTeamScore = 0, awayTeamScore = 0 } = request.body;
 
-        if(!homeTeamScore && !awayTeamScore){
+        if (!homeTeamScore && !awayTeamScore) {
             throw new AppError("Insira o palpite, por favor!");
         }
 
-        try{
+        try {
             const [hunch] = await prisma.hunch.findMany({
                 where: {
                     userId: user_id,
@@ -22,34 +22,61 @@ class HunchController{
                 }
             })
 
-            if(hunch){
+            if (hunch) {
 
                 const hunchUpdate = await prisma.hunch.update({
                     where: {
                         id: hunch.id
                     },
-                    data:{
+                    data: {
                         homeTeamScore: parseInt(homeTeamScore),
-                        awayTeamScore: parseInt(awayTeamScore), 
+                        awayTeamScore: parseInt(awayTeamScore),
                     }
                 })
                 return response.status(201).json(hunchUpdate)
-            }else{
-                
+            } else {
+
                 const hunchCreate = await prisma.hunch.create({
                     data: {
-                       homeTeamScore: parseInt(homeTeamScore),
-                       awayTeamScore: parseInt(awayTeamScore), 
-                       userId: user_id,
-                       gameId
+                        homeTeamScore: parseInt(homeTeamScore),
+                        awayTeamScore: parseInt(awayTeamScore),
+                        userId: user_id,
+                        gameId
                     }
                 })
                 return response.status(201).json(hunchCreate);
             }
-            
-        }catch(error){
+
+        } catch (error) {
             console.log(error);
             throw new AppError("Erro inesperado ao criar palpite!");
+        }
+    }
+
+    async index(request: Request, response: Response) {
+
+        const {username} = request.params;
+
+        try{
+            const user = await prisma.user.findUnique({
+                where:{
+                    username
+                }
+            })
+
+            if(!user){
+                throw new AppError("Usuario não encontrado")
+            }
+            
+            const hunches = await prisma.hunch.findMany({
+                where:{
+                    userId: user.id
+                }
+            })
+            return response.json(hunches)
+        }catch(error){
+            console.log(error)
+            throw new AppError("Erro ao listar palpites!")
         }
     }
 }

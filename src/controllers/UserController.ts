@@ -25,12 +25,22 @@ class UserController {
             throw new AppError("Insira uma senha maior que 6 caracteres, por favor!");
         }
 
+        const usernameExist = await prisma.user.findFirst({
+            where:{
+                username            
+            }
+        })
+
+        if(usernameExist){
+            throw new AppError("Esse username já existe");
+        }
+
         const emailExist = await prisma.user.findFirst({
             where: { email }
         });
 
         if (emailExist) {
-            throw new AppError('Esse email já está cadastrado!');
+            throw new AppError("Esse email já está cadastrado!");
         }
 
         const hashedPassword = await hash(password, 8);
