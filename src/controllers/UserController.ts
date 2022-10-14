@@ -72,6 +72,22 @@ class UserController {
             throw new AppError("Erro Inesperado ao listar todos os usuários")
         }
     }
+
+    async show(request: Request, response: Response){
+        const {username} = request.params
+        try{
+            const user = await prisma.user.findFirst({
+                where:{
+                    username
+                }
+            })
+
+            return response.json(user);
+        }catch(error){
+            console.log(error);
+            throw new AppError("Erro Inesperado ao listar usuario");
+        }
+    }
 }
 
 
