@@ -30,7 +30,7 @@
 With Na Trave, you can create guesses of the results of the games and you can share your guesses with all your friends.
 
 ## Tech Stack
-<img src="https://img.shields.io/badge/React-05122A?style=flat&logo=react" alt="react Badge" height="25">&nbsp;
+<img src="https://img.shields.io/badge/Nodejs-05122A?style=flat&logo=nodedotjs" alt="typescript Badge" height="25">&nbsp;
 <img src="https://img.shields.io/badge/Typescript-05122A?style=flat&logo=typescript" alt="typescript Badge" height="25">&nbsp;
 <br>
 <br>
@@ -42,7 +42,7 @@ With Na Trave, you can create guesses of the results of the games and you can sh
 ## Installation
 To Install this project, follow the steps above:
 ```bash
-git clone https://github.com/leandro4silva/na-trave-frontend
+git clone https://github.com/leandro4silva/na-trave-backend
 ```
 
 ## Usage
